@@ -55,12 +55,17 @@ The project follows the **Model–View–Controller (MVC)** architecture.
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-<img width="299" height="274" alt="Screenshot 2026-07-09 at 22 50 41" src="https://github.com/user-attachments/assets/a0191f91-e717-462e-8114-642b1c5501e9" /><img width="303" height="135" alt="Screenshot 2026-07-09 at 22 52 29" src="https://github.com/user-attachments/assets/d92a854e-f30b-4340-af9e-44bed23c4e99" />
-<img width="288" height="184" alt="Screenshot 2026-07-09 at 22 51 02" src="https://github.com/user-attachments/assets/9642e085-b9f5-46c9-93f0-d56d6bf69bbc" />
-<img width="209" height="176" alt="Screenshot 2026-07-09 at 22 51 51" src="https://github.com/user-attachments/assets/0c194c84-c7ee-4dff-95f0-2f4663529480" />
-<img width="209" height="176" alt="Screenshot 2026-07-09 at 22 51 51" src="https://github.com/user-attachments/assets/0c194c84-c7ee-4dff-95f0-2f4663529480" />
-<img width="441" height="180" alt="Screenshot 2026-07-09 at 22 52 55" src="https://github.com/user-attachments/assets/cfc74090-e92c-4b91-b6bb-44a5661743d6" />
-<img width="440" height="193" alt="Screenshot 2026-07-09 at 22 52 45" src="https://github.com/user-attachments/assets/71885434-9f0c-4cef-b704-2375546031ba" />
+<img width="700" src="https://github.com/user-attachments/assets/a0191f91-e717-462e-8114-642b1c5501e9" />
+
+<img width="700" src="https://github.com/user-attachments/assets/d92a854e-f30b-4340-af9e-44bed23c4e99" />
+
+<img width="700" src="https://github.com/user-attachments/assets/9642e085-b9f5-46c9-93f0-d56d6bf69bbc" />
+
+<img width="700" src="https://github.com/user-attachments/assets/0c194c84-c7ee-4dff-95f0-2f4663529480" />
+
+<img width="700" src="https://github.com/user-attachments/assets/cfc74090-e92c-4b91-b6bb-44a5661743d6" />
+
+<img width="700" src="https://github.com/user-attachments/assets/71885434-9f0c-4cef-b704-2375546031ba" />
 
 ---
 
