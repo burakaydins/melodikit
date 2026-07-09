@@ -1,17 +1,16 @@
 # 🎵 MelodiKit
 
-A modern music playlist management web application built with **Spring Boot**, **Spring MVC**, **Spring Data JPA**, **Hibernate**, **Thymeleaf**, and **H2 Database**.
+A music playlist management web application built with **Spring Boot**, **Spring MVC**, **Spring Data JPA**, **Hibernate**, **Thymeleaf**, and **H2 Database**.
 
-MelodiKit enables users to manage songs, genres, and playlists through a clean and intuitive web interface while following the **Model–View–Controller (MVC)** architecture.
+MelodiKit enables users to create, manage, and organize songs, genres, and playlists through a clean web interface while following the **Model–View–Controller (MVC)** architecture.
 
 ---
-
 
 ## 📖 About
 
 MelodiKit is a web-based music playlist management application developed using the Spring Boot ecosystem.
 
-The project allows users to create, update, delete, and organize songs, genres, and playlists through a responsive web interface. It was developed to strengthen backend development skills and gain practical experience with layered architecture and database management.
+The project was created to practice backend development concepts such as **CRUD operations**, **layered architecture**, **database management**, and the **MVC design pattern** using Spring Data JPA and Hibernate.
 
 ---
 
@@ -44,28 +43,11 @@ The project allows users to create, update, delete, and organize songs, genres, 
 
 ## 🏛️ System Architecture
 
-The project follows the **Model–View–Controller (MVC)** architecture.
+The application follows the **Model–View–Controller (MVC)** architecture.
 
 ### UML Class Diagram
 
-<img width="420" height="353" alt="Screenshot 2026-07-09 at 22 49 10" src="https://github.com/user-attachments/assets/6fe7379c-c95a-4f02-b23c-89ed0320e776" />
-
----
-
-## 📸 Screenshots
-
-### 🏠 Home Page
-<img width="700" src="https://github.com/user-attachments/assets/a0191f91-e717-462e-8114-642b1c5501e9" />
-
-<img width="700" src="https://github.com/user-attachments/assets/d92a854e-f30b-4340-af9e-44bed23c4e99" />
-
-<img width="700" src="https://github.com/user-attachments/assets/9642e085-b9f5-46c9-93f0-d56d6bf69bbc" />
-
-<img width="700" src="https://github.com/user-attachments/assets/0c194c84-c7ee-4dff-95f0-2f4663529480" />
-
-<img width="700" src="https://github.com/user-attachments/assets/cfc74090-e92c-4b91-b6bb-44a5661743d6" />
-
-<img width="700" src="https://github.com/user-attachments/assets/71885434-9f0c-4cef-b704-2375546031ba" />
+<img width="700" alt="UML Diagram" src="https://github.com/user-attachments/assets/6fe7379c-c95a-4f02-b23c-89ed0320e776" />
 
 ---
 
@@ -118,7 +100,7 @@ mvn spring-boot:run
 
 Open your browser
 
-```
+```text
 http://localhost:8080
 ```
 
@@ -148,3 +130,18 @@ This project was developed to gain practical experience with:
 - 📱 Responsive UI Improvements
 - 🎯 Advanced Search & Filtering
 
+---
+
+## 👨‍💻 Developer
+
+**Burak Aydın**
+
+Software Engineering Student
+
+GitHub: https://github.com/burakaydins
+
+---
+
+## 📄 License
+
+This project was developed for educational purposes.
