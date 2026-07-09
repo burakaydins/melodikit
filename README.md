@@ -1,20 +1,29 @@
 # 🎵 MelodiKit
 
-A modern music playlist management web application built with **Spring Boot**, **Thymeleaf**, **Spring MVC**, **Spring Data JPA**, and **H2 Database**.
+A modern music playlist management web application built with **Spring Boot**, **Spring MVC**, **Spring Data JPA**, **Hibernate**, **Thymeleaf**, and **H2 Database**.
 
-MelodiKit enables users to manage songs, genres, and playlists through a clean and user-friendly web interface while following the MVC architecture.
+MelodiKit enables users to manage songs, genres, and playlists through a clean and intuitive web interface while following the **Model–View–Controller (MVC)** architecture.
 
 ---
 
-## 🚀 Features
 
-- 🎵 Manage Songs (Create, Read, Update, Delete)
-- 📂 Manage Genres
-- 📃 Create and Organize Playlists
-- 🔍 View Song Details
+## 📖 About
+
+MelodiKit is a web-based music playlist management application developed using the Spring Boot ecosystem.
+
+The project allows users to create, update, delete, and organize songs, genres, and playlists through a responsive web interface. It was developed to strengthen backend development skills and gain practical experience with layered architecture and database management.
+
+---
+
+## ✨ Features
+
+- 🎵 Song Management (Create, Read, Update, Delete)
+- 📂 Genre Management
+- 🎼 Playlist Management
+- 🔍 Song Details
 - 💾 H2 Database Integration
 - 🏗️ MVC Architecture
-- 🌐 Responsive Web Interface with Thymeleaf
+- 🌐 Responsive Interface with Thymeleaf
 
 ---
 
@@ -33,20 +42,50 @@ MelodiKit enables users to manage songs, genres, and playlists through a clean a
 
 ---
 
+## 🏛️ System Architecture
+
+The project follows the **Model–View–Controller (MVC)** architecture.
+
+### UML Class Diagram
+
+<img width="420" height="353" alt="Screenshot 2026-07-09 at 22 49 10" src="https://github.com/user-attachments/assets/6fe7379c-c95a-4f02-b23c-89ed0320e776" />
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Home Page
+<img width="299" height="274" alt="Screenshot 2026-07-09 at 22 50 41" src="https://github.com/user-attachments/assets/a0191f91-e717-462e-8114-642b1c5501e9" /><img width="303" height="135" alt="Screenshot 2026-07-09 at 22 52 29" src="https://github.com/user-attachments/assets/d92a854e-f30b-4340-af9e-44bed23c4e99" />
+<img width="288" height="184" alt="Screenshot 2026-07-09 at 22 51 02" src="https://github.com/user-attachments/assets/9642e085-b9f5-46c9-93f0-d56d6bf69bbc" />
+<img width="209" height="176" alt="Screenshot 2026-07-09 at 22 51 51" src="https://github.com/user-attachments/assets/0c194c84-c7ee-4dff-95f0-2f4663529480" />
+<img width="209" height="176" alt="Screenshot 2026-07-09 at 22 51 51" src="https://github.com/user-attachments/assets/0c194c84-c7ee-4dff-95f0-2f4663529480" />
+<img width="441" height="180" alt="Screenshot 2026-07-09 at 22 52 55" src="https://github.com/user-attachments/assets/cfc74090-e92c-4b91-b6bb-44a5661743d6" />
+<img width="440" height="193" alt="Screenshot 2026-07-09 at 22 52 45" src="https://github.com/user-attachments/assets/71885434-9f0c-4cef-b704-2375546031ba" />
+
+---
+
 ## 📁 Project Structure
 
-```
+```text
 src
- ├── controller
- ├── model
- ├── repository
- ├── service
- └── templates
+├── main
+│   ├── java
+│   │   ├── controller
+│   │   ├── model
+│   │   ├── repository
+│   │   ├── service
+│   │   └── config
+│   ├── resources
+│   │   ├── static
+│   │   ├── templates
+│   │   └── application.properties
+│   └── ...
+└── test
 ```
 
 ---
 
-## ⚙️ Installation
+## 🚀 Getting Started
 
 Clone the repository
 
@@ -54,7 +93,7 @@ Clone the repository
 git clone https://github.com/burakaydins/melodikit.git
 ```
 
-Go to the project directory
+Navigate to the project
 
 ```bash
 cd melodikit
@@ -80,55 +119,27 @@ http://localhost:8080
 
 ---
 
-## 📸 Screenshots
-
-> Screenshots will be added soon.
-
----
-
-## 🏛️ Architecture
-
-This project follows the **Model-View-Controller (MVC)** architecture.
-
-- Controller Layer
-- Service Layer
-- Repository Layer
-- Entity Layer
-- View Layer (Thymeleaf)
-
----
-
 ## 📚 Learning Objectives
 
-This project was developed to practice:
+This project was developed to gain practical experience with:
 
-- Spring Boot Fundamentals
-- MVC Design Pattern
-- CRUD Operations
+- Spring Boot
+- Spring MVC
 - Spring Data JPA
-- Database Relationships
-- Thymeleaf Template Engine
+- Hibernate ORM
+- CRUD Operations
+- Thymeleaf
 - Layered Architecture
+- Relational Database Design
 
 ---
 
 ## 🔮 Future Improvements
 
-- User Authentication
-- REST API Support
-- MySQL / PostgreSQL Integration
-- Docker Support
-- Search & Filter Functionality
-- Responsive UI Improvements
+- 🔐 User Authentication & Authorization
+- 🌐 REST API Support
+- 🐳 Docker Support
+- 🗄️ MySQL / PostgreSQL Integration
+- 📱 Responsive UI Improvements
+- 🎯 Advanced Search & Filtering
 
----
-
-## 👨‍💻 Author
-
-**Burak Aydın**
-
-GitHub: https://github.com/burakaydins
-
----
-
-⭐ If you like this project, consider giving it a star!
