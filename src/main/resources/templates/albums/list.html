@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albümler | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Albümler</h1>
+            <p>Albüm kapaklarını, yıllarını ve sanatçı bağlantılarını yönet.</p>
+        </div>
+        <a th:href="@{/albums/new}" class="btn btn-primary">Yeni Albüm Ekle</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(albums)}" class="empty-state">Henüz albüm yok. İlk albümünü ekleyebilirsin.</div>
+
+    <div class="grid" th:if="${!#lists.isEmpty(albums)}">
+        <div th:each="album : ${albums}" class="card">
+            <div class="cover square">
+                <img th:if="${album.imageUrl != null and !album.imageUrl.isEmpty()}" th:src="${album.imageUrl}" alt="albüm">
+                <span th:if="${album.imageUrl == null or album.imageUrl.isEmpty()}">💿</span>
+            </div>
+            <div class="item-title" th:text="${album.title}">Albüm adı</div>
+            <div class="item-meta" th:text="${album.artist != null ? album.artist.name : 'Sanatçı yok'}">Sanatçı</div>
+            <div class="item-desc" th:text="${album.releaseYear != null ? album.releaseYear : 'Yıl yok'}">Yıl</div>
+            <div class="item-actions">
+                <a th:href="@{/albums/{id}(id=${album.id})}" class="btn btn-primary">Detay</a>
+                <a th:href="@{/albums/edit/{id}(id=${album.id})}" class="btn btn-secondary">Düzenle</a>
+                <a th:href="@{/albums/delete/{id}(id=${album.id})}" class="btn btn-secondary btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')">Sil</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

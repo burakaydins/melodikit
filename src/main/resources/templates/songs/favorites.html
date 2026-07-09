@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoriler | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Favoriler</h1>
+            <p>En sevdiğin şarkıları ayrı bir sayfada takip et.</p>
+        </div>
+        <a href="/songs" class="btn btn-secondary">Tüm Şarkılar</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(songs)}" class="empty-state">Henüz favori şarkı yok.</div>
+
+    <div class="grid" th:if="${!#lists.isEmpty(songs)}">
+        <div th:each="song : ${songs}" class="card">
+            <div class="cover square">
+                <img th:if="${song.imageUrl != null and !song.imageUrl.isEmpty()}" th:src="${song.imageUrl}" alt="kapak">
+                <span th:if="${song.imageUrl == null or song.imageUrl.isEmpty()}">🎵</span>
+            </div>
+            <div class="item-title" th:text="${song.title}">Şarkı adı</div>
+            <div class="item-meta" th:text="${song.artist != null ? song.artist.name : 'Sanatçı yok'}">Sanatçı</div>
+            <div class="rating" th:text="${'★'.repeat(song.rating) + '☆'.repeat(5 - song.rating)}">☆☆☆☆☆</div>
+            <div class="item-actions">
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="btn btn-primary">Detay</a>
+                <a th:href="@{/songs/favorite/{id}(id=${song.id})}" class="btn btn-secondary">Favoriden Çıkar</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şarkılar | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+        <a href="/stats">İstatistikler</a>
+        <a href="/profile">Profil</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Şarkılar</h1>
+            <p>Koleksiyonundaki şarkıları ara, favorile ve düzenle.</p>
+        </div>
+        <a th:href="@{/songs/new}" class="btn btn-primary">Yeni Şarkı Ekle</a>
+    </div>
+
+    <form class="toolbar" th:action="@{/songs}" method="get">
+        <input class="search-input" type="text" name="keyword" th:value="${keyword}" placeholder="Şarkı, sanatçı, albüm veya tür ara">
+        <select name="artistId" class="filter-select">
+            <option value="">Tüm sanatçılar</option>
+            <option th:each="artist : ${artists}" th:value="${artist.id}" th:selected="${artistId != null and artistId == artist.id}" th:text="${artist.name}"></option>
+        </select>
+        <select name="albumId" class="filter-select">
+            <option value="">Tüm albümler</option>
+            <option th:each="album : ${albums}" th:value="${album.id}" th:selected="${albumId != null and albumId == album.id}" th:text="${album.title}"></option>
+        </select>
+        <select name="genreId" class="filter-select">
+            <option value="">Tüm türler</option>
+            <option th:each="genre : ${genres}" th:value="${genre.id}" th:selected="${genreId != null and genreId == genre.id}" th:text="${genre.name}"></option>
+        </select>
+        <select name="rating" class="filter-select">
+            <option value="">Tüm puanlar</option>
+            <option value="5" th:selected="${rating != null and rating == 5}">5 yıldız</option>
+            <option value="4" th:selected="${rating != null and rating == 4}">4+ yıldız</option>
+            <option value="3" th:selected="${rating != null and rating == 3}">3+ yıldız</option>
+        </select>
+        <select name="sort" class="filter-select">
+            <option value="title" th:selected="${sort == null or sort == 'title'}">Ada göre</option>
+            <option value="rating" th:selected="${sort == 'rating'}">Puana göre</option>
+            <option value="duration" th:selected="${sort == 'duration'}">Süreye göre</option>
+        </select>
+        <label class="filter-check">
+            <input type="checkbox" name="favorites" value="true" th:checked="${favorites}">
+            Favoriler
+        </label>
+        <button type="submit" class="btn btn-primary">Ara</button>
+        <a th:href="@{/songs/favorites}" class="btn btn-secondary">Favoriler</a>
+        <a th:href="@{/songs}" class="btn btn-secondary">Tüm Şarkılar</a>
+        <a th:href="@{/songs/export.csv}" class="btn btn-secondary">CSV İndir</a>
+    </form>
+
+    <div th:if="${#lists.isEmpty(songs)}" class="empty-state">Henüz şarkı yok. Yeni şarkı ekleyerek başlayabilirsin.</div>
+
+    <div class="grid" th:if="${!#lists.isEmpty(songs)}">
+        <div th:each="song : ${songs}" class="card">
+            <div class="cover square">
+                <img th:if="${song.imageUrl != null and !song.imageUrl.isEmpty()}" th:src="${song.imageUrl}" alt="kapak">
+                <span th:if="${song.imageUrl == null or song.imageUrl.isEmpty()}">🎵</span>
+            </div>
+            <div class="item-title" th:text="${song.title}">Şarkı adı</div>
+            <div class="item-meta" th:text="${song.artist != null ? song.artist.name : 'Sanatçı yok'}">Sanatçı</div>
+            <div class="item-desc" th:text="${song.album != null ? song.album.title : 'Albüm yok'}">Albüm</div>
+            <div class="item-desc" th:text="${song.genre != null ? song.genre.name : 'Tür yok'}">Tür</div>
+            <div class="item-desc play-count" data-play-count-suffix=" dinlenme" th:attr="data-play-count-song-id=${song.id}" th:text="${song.playCount + ' dinlenme'}">0 dinlenme</div>
+            <div class="rating" th:text="${'★'.repeat(song.rating) + '☆'.repeat(5 - song.rating)}">☆☆☆☆☆</div>
+            <div class="mini-player" th:if="${song.audioUrl != null and !song.audioUrl.isEmpty()}">
+                <span>Önizleme</span>
+                <audio class="track-player" controls preload="none" th:src="${song.audioUrl}" th:attr="data-song-id=${song.id}"></audio>
+            </div>
+            <div class="player-empty" th:if="${song.audioUrl == null or song.audioUrl.isEmpty()}">Ses dosyası yok</div>
+            <div class="item-actions">
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="btn btn-primary">Detay</a>
+                <a th:href="@{/songs/favorite/{id}(id=${song.id})}" class="btn btn-secondary" th:text="${song.favorite ? '★ Favori' : '☆ Favori'}">Favori</a>
+                <a th:href="@{/songs/edit/{id}(id=${song.id})}" class="btn btn-secondary">Düzenle</a>
+                <a th:href="@{/songs/delete/{id}(id=${song.id})}" class="btn btn-secondary btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')">Sil</a>
+            </div>
+        </div>
+    </div>
+</main>
+<script th:src="@{/js/player.js}"></script>
+</body>
+</html>

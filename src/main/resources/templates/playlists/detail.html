@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Detay | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+        <a href="/stats">İstatistikler</a>
+        <a href="/profile">Profil</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <section th:if="${playlist != null}" class="visual-hero playlist-visual">
+        <img th:if="${playlist.imageUrl != null and !playlist.imageUrl.isEmpty()}" th:src="${playlist.imageUrl}" alt="playlist banner">
+        <img th:if="${playlist.imageUrl == null or playlist.imageUrl.isEmpty()}" src="https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1200&q=80" alt="playlist banner">
+        <div class="visual-hero-copy">
+            <span>Playlist</span>
+            <h1 th:text="${playlist.name}">Playlist</h1>
+            <p th:text="${playlist.songs != null ? playlist.songs.size() + ' şarkı' : '0 şarkı'}">0 şarkı</p>
+        </div>
+    </section>
+
+    <div class="page-header">
+        <div>
+            <h1 th:text="${playlist != null ? playlist.name : 'Playlist bulunamadı'}">Playlist</h1>
+            <p th:text="${playlist != null ? playlist.description : 'Bu playlist kaydı bulunamadı.'}">Açıklama</p>
+        </div>
+        <a href="/playlists" class="btn btn-secondary">Playlistlere Dön</a>
+    </div>
+
+    <div th:if="${playlist != null}" class="detail-layout">
+        <aside class="detail-cover">
+            <div class="cover square">
+                <img th:if="${playlist.imageUrl != null and !playlist.imageUrl.isEmpty()}" th:src="${playlist.imageUrl}" alt="kapak">
+                <span th:if="${playlist.imageUrl == null or playlist.imageUrl.isEmpty()}">🎧</span>
+            </div>
+            <div class="item-title" th:text="${playlist.name}">Playlist adı</div>
+            <div class="item-meta" th:text="${playlist.songs != null ? playlist.songs.size() + ' şarkı' : '0 şarkı'}">0 şarkı</div>
+            <div class="item-meta" th:text="${totalDuration / 60 + ' dk ' + totalDuration % 60 + ' sn'}">0 dk</div>
+            <div class="item-actions">
+                <a th:href="@{/playlists/edit/{id}(id=${playlist.id})}" class="btn btn-primary">Düzenle</a>
+                <button type="button" class="btn btn-secondary share-btn" th:attr="data-share-url=@{/playlists/{id}(id=${playlist.id})}">Paylaş</button>
+            </div>
+            <div class="share-status" aria-live="polite"></div>
+        </aside>
+
+        <section>
+            <h2 class="section-title">Şarkılar</h2>
+            <div th:if="${playlist.songs == null or #lists.isEmpty(playlist.songs)}" class="empty-state">Bu playlistte henüz şarkı yok.</div>
+            <div th:each="song, stat : ${playlist.songs}" class="song-row song-row-player">
+                <div class="song-index" th:text="${stat.index + 1}">1</div>
+                <div>
+                    <div class="item-title" th:text="${song.title}">Şarkı adı</div>
+                    <div class="item-meta" th:text="${song.artist != null ? song.artist.name : 'Sanatçı yok'}">Sanatçı</div>
+                    <div class="item-desc" th:text="${song.album != null ? song.album.title : 'Albüm yok'}">Albüm</div>
+                    <div class="item-desc play-count" data-play-count-suffix=" dinlenme" th:attr="data-play-count-song-id=${song.id}" th:text="${song.playCount + ' dinlenme'}">0 dinlenme</div>
+                    <div class="row-player" th:if="${song.audioUrl != null and !song.audioUrl.isEmpty()}">
+                        <audio class="track-player" controls preload="none" th:src="${song.audioUrl}" th:attr="data-song-id=${song.id}"></audio>
+                    </div>
+                    <div class="player-empty" th:if="${song.audioUrl == null or song.audioUrl.isEmpty()}">Ses dosyası yok</div>
+                </div>
+                <div class="song-row-actions">
+                    <div class="item-meta" th:text="${song.duration / 60 + ':' + (song.duration % 60 < 10 ? '0' + song.duration % 60 : song.duration % 60)}">0:00</div>
+                    <form th:action="@{/playlists/{playlistId}/remove-song/{songId}(playlistId=${playlist.id}, songId=${song.id})}" method="post">
+                        <button type="submit" class="btn btn-secondary btn-danger">Çıkar</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<script th:src="@{/js/player.js}"></script>
+<script th:src="@{/js/share.js}"></script>
+</body>
+</html>

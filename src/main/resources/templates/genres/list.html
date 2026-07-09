@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türler | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Müzik Türleri</h1>
+            <p>Şarkıları türlerine göre düzenleyip daha hızlı bul.</p>
+        </div>
+        <a th:href="@{/genres/new}" class="btn btn-primary">Yeni Tür Ekle</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(genres)}" class="empty-state">Henüz tür yok. İlk müzik türünü ekleyebilirsin.</div>
+
+    <div class="grid" th:if="${!#lists.isEmpty(genres)}">
+        <div th:each="genre, iterStat : ${genres}" class="card genre-card">
+            <a class="genre-card-link" th:href="@{/genres/{id}(id=${genre.id})}">
+                <div class="genre-photo">
+                    <img th:if="${genre.imageUrl != null and !genre.imageUrl.isEmpty()}" th:src="${genre.imageUrl}" th:alt="${genre.name}">
+                    <span th:if="${genre.imageUrl == null or genre.imageUrl.isEmpty()}">🎸</span>
+                </div>
+                <div class="item-title" th:text="${genre.name}">Tür adı</div>
+                <div class="item-desc" th:text="${genre.songs != null ? genre.songs.size() + ' şarkı' : '0 şarkı'}">0 şarkı</div>
+            </a>
+            <div class="item-actions">
+                <a th:href="@{/genres/{id}(id=${genre.id})}" class="btn btn-primary">Şarkıları Gör</a>
+                <a th:href="@{/genres/edit/{id}(id=${genre.id})}" class="btn btn-secondary">Düzenle</a>
+                <a th:href="@{/genres/delete/{id}(id=${genre.id})}" class="btn btn-secondary btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')">Sil</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

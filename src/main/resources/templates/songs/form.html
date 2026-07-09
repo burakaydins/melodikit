@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şarkı Formu | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Şarkı Bilgileri</h1>
+            <p>Şarkının sanatçı, albüm, tür ve kapak bilgilerini kaydet.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <div th:if="${error != null}" class="alert" th:text="${error}">Hata</div>
+        <form th:action="@{/songs/save}" th:object="${song}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <label class="form-label">ŞARKI ADI</label>
+            <input type="text" th:field="*{title}" class="form-control" placeholder="Şarkı adı">
+
+            <label class="form-label">SANATÇI</label>
+            <select th:field="*{artist.id}" class="form-select">
+                <option value="">-- Sanatçı Seçin --</option>
+                <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.name}"></option>
+            </select>
+
+            <label class="form-label">ALBÜM</label>
+            <select th:field="*{album.id}" class="form-select">
+                <option value="">-- Albüm Seçin --</option>
+                <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.title}"></option>
+            </select>
+
+            <label class="form-label">SÜRE (SANİYE)</label>
+            <input type="number" th:field="*{duration}" class="form-control" placeholder="Örn: 210">
+
+            <label class="form-label">PUAN (0-5)</label>
+            <input type="number" th:field="*{rating}" class="form-control" min="0" max="5" placeholder="Örn: 5">
+
+            <label class="form-label">KAPAK GÖRSELİ URL</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control" placeholder="https://...jpg">
+
+            <label class="form-label">SES DOSYASI URL</label>
+            <input type="text" th:field="*{audioUrl}" class="form-control" placeholder="Boş bırakılırsa resmi önizleme otomatik kullanılır">
+            <p class="hint">MP3, WAV veya internetten erişilebilir bir ses bağlantısı ekleyebilirsin.</p>
+
+            <label class="form-label">MÜZİK TÜRÜ</label>
+            <select th:field="*{genre.id}" class="form-select">
+                <option value="">-- Tür Seçin --</option>
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+            </select>
+
+            <label class="checkbox-line">
+                <input type="checkbox" th:field="*{favorite}">
+                <span>Favorilere ekle</span>
+            </label>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a href="/songs" class="btn btn-secondary">Geri Dön</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

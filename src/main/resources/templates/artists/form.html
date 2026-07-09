@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanatçı Formu | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Sanatçı Bilgileri</h1>
+            <p>Sanatçı adı, ülke ve görsel bilgilerini kaydet.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/artists/save}" th:object="${artist}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <label class="form-label">SANATÇI ADI</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="Sanatçı adı">
+            <label class="form-label">ÜLKE</label>
+            <input type="text" th:field="*{country}" class="form-control" placeholder="Örn: Türkiye">
+            <label class="form-label">GÖRSEL URL</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control" placeholder="https://...jpg">
+            <label class="form-label">BİYOGRAFİ</label>
+            <textarea th:field="*{biography}" class="form-control" rows="6" placeholder="Sanatçı hakkında kısa bilgi yaz"></textarea>
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a href="/artists" class="btn btn-secondary">Geri Dön</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

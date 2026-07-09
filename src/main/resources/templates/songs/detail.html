@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şarkı Detay | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+        <a href="/stats">İstatistikler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <section th:if="${song != null}" class="visual-hero song-visual">
+        <img th:if="${song.imageUrl != null and !song.imageUrl.isEmpty()}" th:src="${song.imageUrl}" alt="şarkı kapak banner">
+        <img th:if="${song.imageUrl == null or song.imageUrl.isEmpty()}" src="https://images.unsplash.com/photo-1494232410401-ad00d5433cfa?auto=format&fit=crop&w=1200&q=80" alt="şarkı kapak banner">
+        <div class="visual-hero-copy">
+            <span>Şimdi Çalan</span>
+            <h1 th:text="${song.title}">Şarkı</h1>
+            <p th:text="${song.artist != null ? song.artist.name : 'Sanatçı yok'}">Sanatçı</p>
+        </div>
+    </section>
+
+    <div class="page-header">
+        <div>
+            <h1 th:text="${song != null ? song.title : 'Şarkı bulunamadı'}">Şarkı</h1>
+            <p>Şarkının tüm bilgilerini tek ekranda görüntüle.</p>
+        </div>
+        <a href="/songs" class="btn btn-secondary">Şarkılara Dön</a>
+    </div>
+
+    <div th:if="${song != null}" class="detail-layout">
+        <aside class="detail-cover">
+            <div class="cover square">
+                <img th:if="${song.imageUrl != null and !song.imageUrl.isEmpty()}" th:src="${song.imageUrl}" alt="kapak">
+                <span th:if="${song.imageUrl == null or song.imageUrl.isEmpty()}">🎵</span>
+            </div>
+            <div class="item-title" th:text="${song.title}">Şarkı adı</div>
+            <div class="rating" th:text="${'★'.repeat(song.rating) + '☆'.repeat(5 - song.rating)}">☆☆☆☆☆</div>
+            <div class="main-player" th:if="${song.audioUrl != null and !song.audioUrl.isEmpty()}">
+                <span>Resmi Önizleme</span>
+                <audio class="track-player" controls preload="metadata" th:src="${song.audioUrl}" th:attr="data-song-id=${song.id}"></audio>
+            </div>
+            <div class="item-actions">
+                <a th:href="@{/songs/favorite/{id}(id=${song.id})}" class="btn btn-primary" th:text="${song.favorite ? 'Favoriden Çıkar' : 'Favoriye Ekle'}">Favori</a>
+                <a th:href="@{/songs/edit/{id}(id=${song.id})}" class="btn btn-secondary">Düzenle</a>
+            </div>
+            <div class="platform-links">
+                <a th:href="${'https://www.youtube.com/results?search_query=' + song.title + ' ' + (song.artist != null ? song.artist.name : '')}" target="_blank" rel="noopener" class="btn btn-secondary">YouTube</a>
+                <a th:href="${'https://open.spotify.com/search/' + song.title + ' ' + (song.artist != null ? song.artist.name : '')}" target="_blank" rel="noopener" class="btn btn-secondary">Spotify</a>
+                <a th:href="${'https://www.google.com/search?q=' + song.title + ' ' + (song.artist != null ? song.artist.name : '')}" target="_blank" rel="noopener" class="btn btn-secondary">Google</a>
+            </div>
+        </aside>
+
+        <section class="card">
+            <h2 class="section-title">Şarkı Bilgileri</h2>
+            <p class="item-meta">Sanatçı</p>
+            <div class="item-title" th:text="${song.artist != null ? song.artist.name : 'Sanatçı yok'}">Sanatçı</div>
+            <p class="item-meta">Albüm</p>
+            <div class="item-title" th:text="${song.album != null ? song.album.title : 'Albüm yok'}">Albüm</div>
+            <p class="item-meta">Tür</p>
+            <div class="item-title" th:text="${song.genre != null ? song.genre.name : 'Tür yok'}">Tür</div>
+            <p class="item-meta">Süre</p>
+            <div class="item-title" th:text="${song.duration / 60 + ':' + (song.duration % 60 < 10 ? '0' + song.duration % 60 : song.duration % 60)}">0:00</div>
+            <p class="item-meta">Dinlenme</p>
+            <div class="item-title play-count" data-play-count-suffix=" kez" th:attr="data-play-count-song-id=${song.id}" th:text="${song.playCount + ' kez'}">0 kez</div>
+            <p class="item-meta">Önizleme Bağlantısı</p>
+            <div class="item-desc" th:if="${song.audioUrl != null and !song.audioUrl.isEmpty()}" th:text="${song.audioUrl}">/songs/1/preview</div>
+            <div class="item-desc" th:if="${song.audioUrl == null or song.audioUrl.isEmpty()}">Bu şarkı için ses dosyası eklenmemiş.</div>
+            <p class="item-meta">Playlistler</p>
+            <div th:if="${song.playlists == null or #lists.isEmpty(song.playlists)}" class="item-desc">Bu şarkı henüz playlistte yok.</div>
+            <div class="item-actions" th:if="${song.playlists != null and !#lists.isEmpty(song.playlists)}">
+                <a th:each="playlist : ${song.playlists}" th:href="@{/playlists/{id}(id=${playlist.id})}" class="btn btn-secondary" th:text="${playlist.name}">Playlist</a>
+            </div>
+
+            <h2 class="section-title">Playlist'e Ekle</h2>
+            <form th:action="@{/songs/{id}/add-to-playlist(id=${song.id})}" method="post" class="inline-form">
+                <select name="playlistId" class="form-select" required>
+                    <option value="">Playlist seç</option>
+                    <option th:each="playlist : ${playlists}" th:value="${playlist.id}" th:text="${playlist.name}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary">Ekle</button>
+            </form>
+        </section>
+    </div>
+</main>
+<script th:src="@{/js/player.js}"></script>
+</body>
+</html>

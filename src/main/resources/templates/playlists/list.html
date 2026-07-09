@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlistler | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Playlistler</h1>
+            <p>Sevdiğin şarkıları temalara göre listelere ayır.</p>
+        </div>
+        <a th:href="@{/playlists/new}" class="btn btn-primary">Yeni Playlist Ekle</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(playlists)}" class="empty-state">Henüz playlist yok. Yeni playlist oluşturabilirsin.</div>
+
+    <div class="grid" th:if="${!#lists.isEmpty(playlists)}">
+        <div th:each="playlist : ${playlists}" class="card">
+            <div class="cover square">
+                <img th:if="${playlist.imageUrl != null and !playlist.imageUrl.isEmpty()}" th:src="${playlist.imageUrl}" alt="kapak">
+                <span th:if="${playlist.imageUrl == null or playlist.imageUrl.isEmpty()}">🎧</span>
+            </div>
+            <div class="item-title" th:text="${playlist.name}">Playlist adı</div>
+            <div class="item-desc" th:text="${playlist.description}">Açıklama</div>
+            <div class="item-meta" th:text="${playlist.songs != null ? playlist.songs.size() + ' şarkı' : '0 şarkı'}">0 şarkı</div>
+            <div class="item-actions">
+                <a th:href="@{/playlists/{id}(id=${playlist.id})}" class="btn btn-primary">Detay</a>
+                <a th:href="@{/playlists/edit/{id}(id=${playlist.id})}" class="btn btn-secondary">Düzenle</a>
+                <a th:href="@{/playlists/delete/{id}(id=${playlist.id})}" class="btn btn-secondary btn-danger" onclick="return confirm('Silmek istediğinizden emin misiniz?')">Sil</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İstatistikler | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+        <a href="/stats">İstatistikler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <section class="visual-hero stats-visual">
+        <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1400&q=80" alt="istatistik">
+        <div class="visual-hero-copy">
+            <span>Dinleme Analizi</span>
+            <h1>İstatistikler</h1>
+            <p>Koleksiyonun, dinlenme geçmişin ve en güçlü müzik verilerin tek ekranda.</p>
+        </div>
+    </section>
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <strong th:text="${songCount}">0</strong>
+            <span>Şarkı</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${playlistCount}">0</strong>
+            <span>Playlist</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${totalPlays}">0</strong>
+            <span>Dinlenme</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${totalDuration / 60}">0</strong>
+            <span>Toplam Dakika</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${topGenre}">Tür</strong>
+            <span>Popüler Tür</span>
+        </div>
+    </section>
+
+    <section class="dashboard-grid stats-dashboard">
+        <div class="dashboard-panel">
+            <h2 class="section-title">Öne Çıkanlar</h2>
+            <div class="metric-row">
+                <span>En çok dinlenen şarkı</span>
+                <strong th:text="${mostPlayedSong != null ? mostPlayedSong.title : 'Veri yok'}">Şarkı</strong>
+            </div>
+            <div class="metric-row">
+                <span>En çok dinlenen sanatçı</span>
+                <strong th:text="${topArtist}">Sanatçı</strong>
+            </div>
+            <div class="metric-row">
+                <span>En popüler tür</span>
+                <strong th:text="${topGenre}">Tür</strong>
+            </div>
+        </div>
+
+        <div class="dashboard-panel">
+            <h2 class="section-title">En Çok Dinlenenler</h2>
+            <div th:each="song : ${mostPlayedSongs}" class="mini-row">
+                <div>
+                    <strong th:text="${song.title}">Şarkı</strong>
+                    <span th:text="${song.playCount + ' dinlenme'}">0 dinlenme</span>
+                </div>
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="btn btn-secondary">Detay</a>
+            </div>
+        </div>
+
+        <div class="dashboard-panel history-panel">
+            <h2 class="section-title">Son Dinlenenler</h2>
+            <div th:if="${#lists.isEmpty(listenHistory)}" class="empty-state">Henüz dinleme geçmişi yok.</div>
+            <div th:each="history : ${listenHistory}" class="mini-row">
+                <div>
+                    <strong th:text="${history.song != null ? history.song.title : 'Şarkı'}">Şarkı</strong>
+                    <span th:text="${#temporals.format(history.listenedAt, 'dd.MM.yyyy HH:mm')}">Tarih</span>
+                </div>
+                <a th:if="${history.song != null}" th:href="@{/songs/{id}(id=${history.song.id})}" class="btn btn-secondary">Aç</a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

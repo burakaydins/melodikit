@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanatçı Detay | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <section th:if="${artist != null}" class="visual-hero">
+        <img th:if="${artist.imageUrl != null and !artist.imageUrl.isEmpty()}" th:src="${artist.imageUrl}" alt="sanatçı banner">
+        <img th:if="${artist.imageUrl == null or artist.imageUrl.isEmpty()}" src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=80" alt="sanatçı banner">
+        <div class="visual-hero-copy">
+            <span>Sanatçı Profili</span>
+            <h1 th:text="${artist.name}">Sanatçı</h1>
+            <p th:text="${artist.country != null and !artist.country.isEmpty() ? artist.country : 'Ülke bilgisi yok'}">Ülke</p>
+        </div>
+    </section>
+
+    <div class="page-header">
+        <div>
+            <h1 th:text="${artist != null ? artist.name : 'Sanatçı bulunamadı'}">Sanatçı</h1>
+            <p th:text="${artist != null ? artist.country : ''}">Ülke</p>
+        </div>
+        <a href="/artists" class="btn btn-secondary">Sanatçılara Dön</a>
+    </div>
+
+    <div th:if="${artist != null}" class="detail-layout">
+        <aside class="detail-cover">
+            <div class="cover circle">
+                <img th:if="${artist.imageUrl != null and !artist.imageUrl.isEmpty()}" th:src="${artist.imageUrl}" alt="sanatçı">
+                <span th:if="${artist.imageUrl == null or artist.imageUrl.isEmpty()}">🎤</span>
+            </div>
+            <div class="item-title" th:text="${artist.name}">Sanatçı adı</div>
+            <div class="item-meta" th:text="${artist.country != null and !artist.country.isEmpty() ? artist.country : 'Ülke yok'}">Ülke</div>
+            <div class="item-actions">
+                <a th:href="@{/artists/edit/{id}(id=${artist.id})}" class="btn btn-primary">Düzenle</a>
+            </div>
+        </aside>
+
+        <section>
+            <div class="card profile-section">
+                <h2 class="section-title">Biyografi</h2>
+                <p class="bio-text" th:if="${artist.biography != null and !artist.biography.isEmpty()}" th:text="${artist.biography}">
+                    Sanatçı biyografisi
+                </p>
+                <p class="item-desc" th:if="${artist.biography == null or artist.biography.isEmpty()}">
+                    Bu sanatçı için henüz biyografi eklenmemiş.
+                </p>
+            </div>
+
+            <h2 class="section-title">Şarkıları</h2>
+            <div th:if="${artist.songs == null or #lists.isEmpty(artist.songs)}" class="empty-state">Bu sanatçıya bağlı şarkı yok.</div>
+            <div th:each="song, stat : ${artist.songs}" class="song-row">
+                <div class="song-index" th:text="${stat.index + 1}">1</div>
+                <div>
+                    <div class="item-title" th:text="${song.title}">Şarkı</div>
+                    <div class="item-meta" th:text="${song.album != null ? song.album.title : 'Albüm yok'}">Albüm</div>
+                </div>
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="btn btn-secondary">Detay</a>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

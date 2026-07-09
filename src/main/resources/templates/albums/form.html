@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albüm Formu | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Albüm Bilgileri</h1>
+            <p>Albüm adı, çıkış yılı, sanatçı ve kapak görselini kaydet.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/albums/save}" th:object="${album}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <label class="form-label">ALBÜM ADI</label>
+            <input type="text" th:field="*{title}" class="form-control" placeholder="Albüm adı">
+
+            <label class="form-label">SANATÇI</label>
+            <select th:field="*{artist.id}" class="form-select">
+                <option value="">-- Sanatçı Seçin --</option>
+                <option th:each="artist : ${artists}" th:value="${artist.id}" th:text="${artist.name}"></option>
+            </select>
+
+            <label class="form-label">ÇIKIŞ YILI</label>
+            <input type="number" th:field="*{releaseYear}" class="form-control" placeholder="Örn: 2024">
+
+            <label class="form-label">KAPAK GÖRSELİ URL</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control" placeholder="https://...jpg">
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a href="/albums" class="btn btn-secondary">Geri Dön</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

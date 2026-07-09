@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+        <a href="/stats">İstatistikler</a>
+        <a href="/profile">Profil</a>
+    </div>
+    <div class="nav-user">
+        <span th:text="${profileUser.displayName}">Kullanıcı</span>
+        <a href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <section class="visual-hero profile-visual">
+        <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80" alt="profil">
+        <div class="visual-hero-copy">
+            <span>Kullanıcı Profili</span>
+            <h1 th:text="${profileUser.displayName}">Demo Kullanıcı</h1>
+            <p th:text="${'@' + profileUser.username}">@demo</p>
+        </div>
+    </section>
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <strong th:text="${favoriteCount}">0</strong>
+            <span>Favori</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${playlistCount}">0</strong>
+            <span>Playlist</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${totalPlays}">0</strong>
+            <span>Dinlenme</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${#lists.size(mostPlayedSongs)}">0</strong>
+            <span>Öne Çıkan</span>
+        </div>
+        <div class="stat-card">
+            <strong th:text="${#lists.size(listenHistory)}">0</strong>
+            <span>Geçmiş</span>
+        </div>
+    </section>
+
+    <section class="dashboard-grid stats-dashboard">
+        <div class="dashboard-panel">
+            <h2 class="section-title">En Çok Dinlediklerin</h2>
+            <div th:each="song : ${mostPlayedSongs}" class="mini-row">
+                <div>
+                    <strong th:text="${song.title}">Şarkı</strong>
+                    <span th:text="${song.playCount + ' dinlenme'}">0 dinlenme</span>
+                </div>
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="btn btn-secondary">Aç</a>
+            </div>
+        </div>
+
+        <div class="dashboard-panel history-panel">
+            <h2 class="section-title">Son Dinleme Geçmişi</h2>
+            <div th:if="${#lists.isEmpty(listenHistory)}" class="empty-state">Henüz dinleme geçmişi yok.</div>
+            <div th:each="history : ${listenHistory}" class="mini-row">
+                <div>
+                    <strong th:text="${history.song != null ? history.song.title : 'Şarkı'}">Şarkı</strong>
+                    <span th:text="${#temporals.format(history.listenedAt, 'dd.MM.yyyy HH:mm')}">Tarih</span>
+                </div>
+                <a th:if="${history.song != null}" th:href="@{/songs/{id}(id=${history.song.id})}" class="btn btn-secondary">Aç</a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

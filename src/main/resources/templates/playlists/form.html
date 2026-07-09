@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist Formu | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+    <div class="nav-user">
+        <span th:if="${currentUser != null}" th:text="${currentUser.displayName}">Kullanıcı</span>
+        <a th:if="${currentUser == null}" href="/login">Giriş</a>
+        <a th:if="${currentUser != null}" href="/logout">Çıkış</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1>Playlist Bilgileri</h1>
+            <p>Playlist adını, açıklamasını ve içindeki şarkıları seç.</p>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <div th:if="${error != null}" class="alert" th:text="${error}">Hata</div>
+        <form th:action="@{/playlists/save}" th:object="${playlist}" method="post">
+            <input type="hidden" th:field="*{id}">
+
+            <label class="form-label">PLAYLIST ADI</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="Playlist adı">
+
+            <label class="form-label">AÇIKLAMA</label>
+            <textarea th:field="*{description}" class="form-control" placeholder="Playlist açıklaması" rows="3"></textarea>
+
+            <label class="form-label">KAPAK GÖRSELİ URL</label>
+            <input type="text" th:field="*{imageUrl}" class="form-control" placeholder="https://...jpg">
+
+            <label class="form-label">ŞARKILAR</label>
+            <p class="hint">Birden fazla seçmek için Cmd tuşuna basılı tutun.</p>
+            <select name="songIds" multiple class="form-select" size="7">
+                <option th:each="song : ${songs}"
+                        th:value="${song.id}"
+                        th:selected="${playlist.songs != null and #lists.contains(playlist.songs.![id], song.id)}"
+                        th:text="${song.title + ' - ' + (song.artist != null ? song.artist.name : 'Sanatçı yok')}"></option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Kaydet</button>
+            <a href="/playlists" class="btn btn-secondary">Geri Dön</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>

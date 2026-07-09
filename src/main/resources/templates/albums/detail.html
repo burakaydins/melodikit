@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albüm Detay | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/genres">Türler</a>
+        <a href="/artists">Sanatçılar</a>
+        <a href="/albums">Albümler</a>
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+</nav>
+
+<main class="page">
+    <div class="page-header">
+        <div>
+            <h1 th:text="${album != null ? album.title : 'Albüm bulunamadı'}">Albüm</h1>
+            <p th:text="${album != null and album.artist != null ? album.artist.name : 'Sanatçı yok'}">Sanatçı</p>
+        </div>
+        <a href="/albums" class="btn btn-secondary">Albümlere Dön</a>
+    </div>
+
+    <div th:if="${album != null}" class="detail-layout">
+        <aside class="detail-cover">
+            <div class="cover square">
+                <img th:if="${album.imageUrl != null and !album.imageUrl.isEmpty()}" th:src="${album.imageUrl}" alt="albüm">
+                <span th:if="${album.imageUrl == null or album.imageUrl.isEmpty()}">💿</span>
+            </div>
+            <div class="item-title" th:text="${album.title}">Albüm adı</div>
+            <div class="item-meta" th:text="${album.releaseYear != null ? album.releaseYear : 'Yıl yok'}">Yıl</div>
+            <div class="item-meta" th:text="${album.songs != null ? album.songs.size() + ' şarkı' : '0 şarkı'}">0 şarkı</div>
+            <div class="item-actions">
+                <a th:href="@{/albums/edit/{id}(id=${album.id})}" class="btn btn-primary">Düzenle</a>
+            </div>
+        </aside>
+
+        <section>
+            <h2 class="section-title">Albüm Şarkıları</h2>
+            <div th:if="${album.songs == null or #lists.isEmpty(album.songs)}" class="empty-state">Bu albüme bağlı şarkı yok.</div>
+            <div th:each="song, stat : ${album.songs}" class="song-row">
+                <div class="song-index" th:text="${stat.index + 1}">1</div>
+                <div>
+                    <div class="item-title" th:text="${song.title}">Şarkı</div>
+                    <div class="item-meta" th:text="${song.genre != null ? song.genre.name : 'Tür yok'}">Tür</div>
+                </div>
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="btn btn-secondary">Detay</a>
+            </div>
+        </section>
+    </div>
+</main>
+</body>
+</html>

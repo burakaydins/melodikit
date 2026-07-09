@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş | MelodiKit</title>
+    <link rel="stylesheet" th:href="@{/css/site.css}">
+</head>
+<body>
+<nav class="site-nav">
+    <a class="brand" href="/"><span>Melodi</span>Kit</a>
+    <div class="nav-links">
+        <a href="/songs">Şarkılar</a>
+        <a href="/playlists">Playlistler</a>
+    </div>
+</nav>
+
+<main class="page auth-page">
+    <div class="form-card">
+        <h1>Giriş Yap</h1>
+        <p class="item-desc">Demo kullanıcıyla uygulamayı kişisel müzik paneli gibi kullanabilirsin.</p>
+
+        <div th:if="${error != null}" class="alert" th:text="${error}">Hata</div>
+
+        <form th:action="@{/login}" method="post">
+            <label class="form-label">KULLANICI ADI</label>
+            <input type="text" name="username" class="form-control" value="demo" required>
+
+            <label class="form-label">ŞİFRE</label>
+            <input type="password" name="password" class="form-control" value="1234" required>
+
+            <button type="submit" class="btn btn-primary">Giriş Yap</button>
+            <a href="/" class="btn btn-secondary">Ana Sayfa</a>
+        </form>
+    </div>
+</main>
+</body>
+</html>
